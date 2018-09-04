@@ -1,3 +1,5 @@
+#include "storage.hpp"
+
 namespace IO
 {
     const int led = LED_BUILTIN;
@@ -57,5 +59,25 @@ namespace IO
                 }
             }
         }
+    }
+
+    void ledOn(){
+        digitalWrite(led, HIGH);
+    }
+
+    void ledOff(){
+        digitalWrite(led, LOW);
+    }
+
+    void outputNumberFormatted(int number, char prefix, char postfix){
+
+    }
+
+    void outputDataPlain(){
+
+    }
+
+    void outputDataFormatPair(unsigned short int index1, unsigned short int index2, char prefix, char postfix){
+
     }
 }
