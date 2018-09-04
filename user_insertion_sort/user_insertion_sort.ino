@@ -2,8 +2,6 @@
 #include "io.hpp"
 #include "sort.hpp"
 
-const int led = LED_BUILTIN;
-
 void setup() {
   Storage::setup();
   IO::setup();

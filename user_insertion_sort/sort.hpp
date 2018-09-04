@@ -5,7 +5,7 @@ namespace Sort
     }
 
     bool dataSortable(){
-
+        return false;
     }
 
     void sortData(){

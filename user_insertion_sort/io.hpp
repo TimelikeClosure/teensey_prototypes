@@ -1,66 +1,61 @@
 namespace IO
 {
+    const int led = LED_BUILTIN;
+
     void setup(){
 
     }
 
     bool inputAvailable(){
+        return Serial.available();
+    }
 
-        return false;
+    bool isEndOfList(unsigned short int charCode){
+        return charCode < 32 && charCode != 11;
+    }
+
+    void flushInput(){
+        while(Serial.available()){
+            Serial.read();
+        }
+    }
+
+    bool isPartOfNumber(unsigned short int charCode){
+        return charCode >= 48 && charCode <= 57;
+    }
+
+    int concatDigitToNumber(int prevNumber, unsigned int digit){
+        return prevNumber * 10 + digit;
+    }
+
+    void outputOverflowWarning(){
+        Serial.print("Warning: Too many inputs. Only sorting first ");
+        Serial.print(Storage::MAX_COUNT);
+        Serial.println(" items.");
     }
 
     void storeInputData(){
+        unsigned short int inputCharCode;
+        int inputNumber = 0;
+        Storage::empty();
 
+        while(Serial.available()){
+            inputCharCode = Serial.read();
+            if (isEndOfList(inputCharCode)){
+                flushInput();
+                break;
+            } else if (isPartOfNumber(inputCharCode)){
+                inputNumber = concatDigitToNumber(inputNumber, inputCharCode);
+            } else {
+                if (Storage::isFull()){
+                    outputOverflowWarning();
+                    flushInput();
+                    break;
+                } else {
+                    Storage::append(inputNumber);
+                    inputNumber = 0;
+                }
+            }
+        }
     }
-
-    // bool isEndOfList(unsigned short int charCode){
-    //     return charCode < 32 && charCode != 11;
-    // }
-
-    // void flushStdin(){
-    //     while(Serial.available()){
-    //         Serial.read();
-    //     }
-    // }
-
-    // bool isPartOfNumber(unsigned short int charCode){
-    //     return charCode >= 48 && charCode <= 57;
-    // }
-
-    // int concatDigitToNumber(int prevNumber, unsigned int digit){
-    //     return prevNumber * 10 + digit;
-    // }
-
-    // bool stdinHasData(){
-    // return Serial.available();
-    // }
-
-    // struct PseudoArray pullArrayFromStdin(){
-    // struct PseudoArray inputNumbers = {dataPool.memberSize, 0, dataPool.data};
-    // int inputNumber = 0;
-    // unsigned short int inputCharCode;
-
-    // while(Serial.available()){
-    //     inputCharCode = Serial.read();
-    //     if (isEndOfList(inputCharCode)){
-    //     flushStdin();
-    //     break;
-    //     } else if (isPartOfNumber(inputCharCode)){
-    //     inputNumber = concatDigitToNumber(inputNumber, inputCharCode);
-    //     } else {
-    //     if (isListFull()){
-    //         Serial.print("Too many items provided. Only sorting first ");
-    //         Serial.print(dataPool.count);
-    //         Serial.println(" items.");
-    //         flushStdin();
-    //         emptyList(&inputNumbers);
-    //         break;
-    //     } else {
-    //         concatNumberToList(&inputNumbers, inputNumber);
-    //     }
-    //     }
-    // }
-
-    // return inputNumbers;
-    // }
 }

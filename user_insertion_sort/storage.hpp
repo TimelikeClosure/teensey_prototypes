@@ -1,6 +1,20 @@
 namespace Storage
 {
+    const short int MAX_COUNT = 128;
+
     void setup(){
+
+    }
+
+    void empty(){
+
+    }
+
+    bool isFull(){
+
+    }
+
+    void append(int newElement){
 
     }
 
